@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ayan Dey • Developer Tools
 
-## Getting Started
+A collection of clean, privacy-first developer utilities. No accounts, no data collection, and zero tracking. Everything runs locally in your browser.
 
-First, run the development server:
+## Philosophy
+- **Local First**: Your data never leaves your machine. 
+- **No Friction**: No logins, no cookies, no "enterprise" fluff.
+- **Fast**: Optimized for speed and direct utility.
+- **Handmade**: Built by a developer, for developers.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Included Tools
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Social Media
+- Social Cropper
+- Matte Generator
+- Carousel Splitter
+- Watermarker
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Colour
+- Color Converter (HEX, RGB, HSL, OKLCH, etc.)
+- Tailwind Shade Scale
+- Harmony Generator
+- Palette Generator
+- Palette Collection
+- Contrast Checker
+- Colorblindness Simulator
+- Gradient Generator
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Images & Assets
+- Favicon Generator
+- SVG Optimizer
+- Placeholder Generator
+- Image Splitter
+- Image Converter
+- Grain Adder
+- Background Remover
+- Image Tracer
 
-## Learn More
+### Typography & Text
+- PX to REM
+- Line Height Calc
+- Typo Converter (Agates, Ciceros, Picas, etc.)
+- Paper Sizes
+- Word Counter
+- Unicode Symbols
+- Font Explorer
 
-To learn more about Next.js, take a look at the following resources:
+### Print & Production
+- PDF Preflight
+- Finishing Assistant
+- Zine Imposer
+- Print Imposer
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Utilities
+- Markdown Editor
+- Tailwind Cheat Sheet
+- QR Generator
+- Barcode Generator
+- Meta Tag Generator
+- Regex Tester
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Calculators
+- Scientific Calculator
+- Graphing Calculator
+- Algebra Solver
+- Base Converter
+- Time Calculator
+- Unit Converter
+- Text Encoder
 
-## Deploy on Vercel
+### Experimental
+- Shavian Transliterator
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Stack
+- Next.js (App Router)
+- Shadcn UI
+- Framer Motion
+- Lucide Icons (Animated)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+MIT • Built by [Ayan Dey](https://beingayandey.me)
