@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://beingayandey.me/tools/sitemap.xml', // Replace with your domain
+    sitemap: 'https://ayan-dev-tools.vercel.app/sitemap.xml',
   };
 }
