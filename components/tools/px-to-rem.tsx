@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRightLeft, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useWorkflow } from "@/context/workflow-context";
 
 export function PxToRemTool() {
   const [pxValue, setPxValue] = useState("");
@@ -11,6 +12,15 @@ export function PxToRemTool() {
   const [baseSize, setBaseSize] = useState("16");
   const [copied, setCopied] = useState<"px" | "rem" | null>(null);
   const [mode, setMode] = useState<"px-to-rem" | "rem-to-px">("px-to-rem");
+  const { completeAction, resetAction } = useWorkflow();
+
+  useEffect(() => {
+    if (pxValue || remValue) {
+      completeAction();
+    } else {
+      resetAction();
+    }
+  }, [pxValue, remValue, completeAction, resetAction]);
 
   const base = parseFloat(baseSize) || 16;
 

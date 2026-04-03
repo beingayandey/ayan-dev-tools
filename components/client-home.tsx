@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Star, Sparkles } from "lucide-react";
+import { ArrowRight, Star, Sparkles, History, Trash2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import { useAppToast } from "@/hooks/use-app-toast";
 import { Tool, ToolCategory } from "@/lib/tools";
 import { iconMap } from "@/lib/icon-map";
 import { useFavorites, FavoriteTool } from "@/hooks/use-favorites";
+import { useRecentTools } from "@/hooks/use-recent-tools";
 import { cn } from "@/lib/utils";
 
 interface ClientHomeProps {
@@ -18,14 +19,72 @@ interface ClientHomeProps {
 
 export function ClientHome({ toolCategories, featuredTools }: ClientHomeProps) {
   const { premium } = useAppToast();
-  const { favorites, isLoaded } = useFavorites();
+  const { favorites, isLoaded: isFavoritesLoaded } = useFavorites();
+  const { recentTools, clearRecentTools, isLoaded: isRecentLoaded } = useRecentTools();
 
-  const showFavorites = isLoaded && favorites.length > 0;
+  const showFavorites = isFavoritesLoaded && favorites.length > 0;
+  const showRecent = isRecentLoaded && recentTools.length > 0;
+  
+  // If user has favorites, show favorites. Otherwise show featured.
   const displayTools = showFavorites ? favorites : featuredTools;
 
   return (
-    <div className="space-y-20">
-      {/* 🌟 Dynamic Hero Section: Favorites or Featured */}
+    <div className="space-y-20 pt-4">
+      
+      {/* 🕒 Recently Used Tools (NEW RETENTION ENGINE) */}
+      {showRecent && (
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="size-8 rounded-lg flex items-center justify-center border transition-colors bg-emerald-500/10 border-emerald-500/20">
+                <History className="size-4 text-emerald-400" />
+              </div>
+              <h2 className="text-xl font-bold text-foreground">
+                Recently Used
+              </h2>
+            </div>
+            <button 
+              onClick={clearRecentTools}
+              className="group flex items-center gap-1.5 text-xs text-zinc-500 hover:text-red-400 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-2.5 py-1.5 rounded-md border border-white/5 hover:border-red-500/20"
+            >
+              <Trash2 className="size-3" />
+              <span>Clear</span>
+            </button>
+          </div>
+          
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {recentTools.map((tool, i) => (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.03 * i, duration: 0.3 }}
+                key={`recent-${tool.id}-${tool.lastUsed}`}
+              >
+                <Link href={tool.route} className="block h-full group">
+                  <Card className="h-full transition-all duration-300 overflow-hidden relative bg-zinc-900/30 border-white/5 hover:border-emerald-500/30 hover:bg-zinc-900/60">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-emerald-500/5" />
+                    <CardHeader className="relative z-10 p-4 flex flex-row items-center gap-3 space-y-0">
+                      <div className="size-8 shrink-0 rounded-lg bg-zinc-800 flex items-center justify-center border border-white/5 group-hover:border-emerald-500/30 transition-colors">
+                        {(() => {
+                          const Icon = iconMap[tool.icon] || History;
+                          return <Icon className="size-4 text-zinc-400 group-hover:text-emerald-400 transition-colors" />;
+                        })()}
+                      </div>
+                      <div className="min-w-0">
+                        <CardTitle className="truncate transition-colors text-sm font-medium text-zinc-300 group-hover:text-emerald-400">
+                          {tool.name}
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 🌟 Dynamic Hero Section: Favorites (Pinned) or Featured */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

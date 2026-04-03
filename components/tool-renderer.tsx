@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Zap, Construction } from "lucide-react";
 import {
@@ -9,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRecentTools } from "@/hooks/use-recent-tools";
+import { getToolById } from "@/lib/tools";
 
 // Loading Skeleton for Tools
 const LoadingTool = () => (
@@ -445,6 +448,21 @@ const toolComponents: Record<string, React.ComponentType> = {
 
 export default function ToolRenderer({ toolId }: { toolId: string }) {
   const ToolComponent = toolComponents[toolId];
+  const { addRecentTool } = useRecentTools();
+
+  useEffect(() => {
+    if (toolId) {
+      const tool = getToolById(toolId);
+      if (tool) {
+        addRecentTool({
+          id: tool.id,
+          name: tool.name,
+          route: tool.href,
+          icon: tool.icon as string
+        });
+      }
+    }
+  }, [toolId, addRecentTool]);
 
   if (!ToolComponent) {
     return (

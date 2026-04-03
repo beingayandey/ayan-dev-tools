@@ -11,6 +11,7 @@ import { LenisWrapper } from "@/components/lenis-wrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { BackgroundRenderer } from "@/components/background-renderer";
 import { FavoritesProvider } from "@/context/favorites-context";
+import { RecentToolsProvider } from "@/context/recent-tools-context";
 
 const fontInter = Inter({
   subsets: ["latin"],
@@ -75,19 +76,21 @@ export default function RootLayout({
         <Toaster />
         <BackgroundRenderer />
         <FavoritesProvider>
-          <LenisWrapper>
-            <SidebarProvider className="bg-transparent min-h-screen relative">
-              <AppSidebar />
-              <SidebarInset className="bg-transparent flex flex-col flex-1 min-h-screen">
-                <AppHeader />
-                <div className="flex flex-1 relative">
-                  <main className="flex-1 bg-transparent relative custom-scrollbar overscroll-contain pb-10 sm:pb-20">
-                    {children}
-                  </main>
-                </div>
-              </SidebarInset>
-            </SidebarProvider>
-          </LenisWrapper>
+          <RecentToolsProvider>
+            <LenisWrapper>
+              <SidebarProvider className="bg-transparent min-h-screen relative">
+                <AppSidebar />
+                <SidebarInset className="bg-transparent flex flex-col flex-1 min-h-screen">
+                  <AppHeader />
+                  <div className="flex flex-1 relative">
+                    <main className="flex-1 bg-transparent relative custom-scrollbar overscroll-contain pb-10 sm:pb-20">
+                      {children}
+                    </main>
+                  </div>
+                </SidebarInset>
+              </SidebarProvider>
+            </LenisWrapper>
+          </RecentToolsProvider>
         </FavoritesProvider>
         <Analytics />
       </body>

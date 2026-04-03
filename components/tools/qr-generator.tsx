@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useWorkflow } from "@/context/workflow-context";
 import {
   Download,
   Copy,
@@ -162,6 +163,7 @@ export function QrGeneratorTool() {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const { completeAction, resetAction } = useWorkflow();
 
   // vCard state
   const [vCardData, setVCardData] = useState<VCardData>(defaultVCard);
@@ -306,10 +308,12 @@ export function QrGeneratorTool() {
           reader.readAsDataURL(blob);
         });
         setQrDataUrl(dataUrl);
+        completeAction();
       }
     } catch (err) {
       console.error("QR generation failed:", err);
       setQrDataUrl(null);
+      resetAction();
     } finally {
       setGenerating(false);
     }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Copy, Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWorkflow } from "@/context/workflow-context";
 
 export function WordCounterTool() {
   const [text, setText] = useState("");
@@ -56,6 +57,17 @@ export function WordCounterTool() {
       speakingTime,
     };
   }, [text]);
+
+  const { completeAction, resetAction } = useWorkflow();
+
+  // Workflow Trigger: If the user has typed enough to use the tool, complete the action
+  useEffect(() => {
+    if (stats.words > 3 || stats.characters > 20) {
+      completeAction();
+    } else if (stats.characters === 0) {
+      resetAction();
+    }
+  }, [stats.words, stats.characters, completeAction, resetAction]);
 
   const copyStats = async () => {
     const statsText = `Words: ${stats.words}

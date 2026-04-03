@@ -19,6 +19,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ToolRenderer from "@/components/tool-renderer";
+import { SmartSuggestions } from "@/components/smart-suggestions";
+import { WorkflowProvider } from "@/context/workflow-context";
+import { WorkflowMode } from "@/components/workflow-mode";
+import { CrossLinks } from "@/components/cross-links";
 
 interface ToolPageProps {
   params: Promise<{
@@ -99,9 +103,18 @@ export default async function ToolPage({ params }: ToolPageProps) {
       </header>
 
       {/* ⚡ Client component boundary - Interactive logic lives here */}
-      <section className="mb-16 border border-border/50 rounded-2xl bg-card shadow-sm overflow-hidden">
-        <ToolRenderer toolId={toolId} />
+      <section className="border border-border/50 rounded-2xl bg-card shadow-sm overflow-hidden">
+        <WorkflowProvider>
+          <ToolRenderer toolId={toolId} />
+          {/* 🔗 Contextual Cross-Linking */}
+          <CrossLinks toolId={toolId} />
+          {/* 🎯 Workflow Mode Pipeline (Next Steps) */}
+          <WorkflowMode toolId={toolId} />
+        </WorkflowProvider>
       </section>
+
+      {/* 🧠 Smart Suggestions (Engagement Engine) */}
+      <SmartSuggestions toolId={toolId} />
 
       {/* 🧾 SEO: High-value Product Deep Dive */}
       <section className="mt-20 space-y-24">
