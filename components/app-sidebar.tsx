@@ -193,7 +193,7 @@ export function AppSidebar() {
                 </h3>
                 <p className="text-zinc-500">
                   <a
-                    href="https://beingayandey.me"
+                    href="https://ayan-dev-tools.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-indigo-400 transition-colors"

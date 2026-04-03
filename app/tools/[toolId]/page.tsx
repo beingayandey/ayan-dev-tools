@@ -618,12 +618,19 @@ export default async function ToolPage({ params }: ToolPageProps) {
       {/* 🛡️ Built by Ayan Dey Footer */}
       <footer className="mt-24 pt-12 border-t border-border/40 text-center">
         <div className="flex flex-col items-center gap-4">
-           <div className="size-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
-              <Sparkles className="size-5 text-indigo-400" />
-           </div>
-           <p className="text-sm font-medium text-muted-foreground">
-             Built by <a href="https://beingayandey.me" className="text-indigo-400 hover:underline">Ayan Dey</a> • Privacy-first tools for developers.
-           </p>
+          <div className="size-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
+            <Sparkles className="size-5 text-indigo-400" />
+          </div>
+          <p className="text-sm font-medium text-muted-foreground">
+            Built by{" "}
+            <a
+              href="https://ayan-dev-tools.vercel.app"
+              className="text-indigo-400 hover:underline"
+            >
+              Ayan Dey
+            </a>{" "}
+            • Privacy-first tools for developers.
+          </p>
         </div>
       </footer>
 
