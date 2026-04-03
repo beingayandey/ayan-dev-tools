@@ -4,9 +4,9 @@ export const dynamic = "force-static";
 import { allTools, toolCategories } from '@/lib/tools';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://beingayandey.me/tools'; // Replace with your actual domain
+  const baseUrl = 'https://ayan-dev-tools.vercel.app';
 
-  // 🏛️ 1. Main Pages
+  // 🏛️ 1. Home Page
   const staticPages = [
     {
       url: baseUrl,
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // 🏠 2. Category Hub Pages (High Authority Pillars)
+  // 🏠 2. Category Hub Pages
   const categoryPages = toolCategories.map((category) => ({
     url: `${baseUrl}/tools/category/${category.id}`,
     lastModified: new Date(),
@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  // 🛠️ 3. All Tool Pages (Including SEO Aliases/Multi-Landing Pages)
+  // 🛠️ 3. All Tool Pages
   const toolPages = allTools.map((tool) => ({
     url: `${baseUrl}/tools/${tool.id}`,
     lastModified: new Date(),
