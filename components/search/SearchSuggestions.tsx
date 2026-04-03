@@ -29,7 +29,7 @@ export function SearchSuggestions({
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto p-3 custom-scrollbar sm:max-h-[60vh]"
+      className="flex-1 overflow-y-auto overflow-x-hidden p-3 custom-scrollbar sm:max-h-[60vh]"
     >
       {items.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
@@ -126,7 +126,7 @@ function SuggestionItem({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span
-            className={`font-semibold tracking-tight truncate text-sm sm:text-base ${
+            className={`font-semibold tracking-tight break-words text-sm sm:text-base line-clamp-1 ${
               isActive ? "text-white" : "text-zinc-300 group-hover:text-white"
             }`}
           >
@@ -145,7 +145,7 @@ function SuggestionItem({
             </Badge>
           )}
         </div>
-        <p className="text-xs text-zinc-500 truncate mt-0.5 font-medium group-hover:text-zinc-400 transition-colors">
+        <p className="text-xs text-zinc-500 break-words line-clamp-2 mt-0.5 font-medium group-hover:text-zinc-400 transition-colors">
           {item.description}
         </p>
       </div>

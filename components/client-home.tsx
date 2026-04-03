@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { useAppToast } from "@/hooks/use-app-toast";
 import { Tool, ToolCategory } from "@/lib/tools";
 import { iconMap } from "@/lib/icon-map";
+import { useFavorites, FavoriteTool } from "@/hooks/use-favorites";
+import { cn } from "@/lib/utils";
 
 interface ClientHomeProps {
   toolCategories: ToolCategory[];
@@ -16,42 +18,98 @@ interface ClientHomeProps {
 
 export function ClientHome({ toolCategories, featuredTools }: ClientHomeProps) {
   const { premium } = useAppToast();
-  
+  const { favorites, isLoaded } = useFavorites();
+
+  const showFavorites = isLoaded && favorites.length > 0;
+  const displayTools = showFavorites ? favorites : featuredTools;
+
   return (
     <div className="space-y-20">
-      {/* Flagship Workflows */}
+      {/* 🌟 Dynamic Hero Section: Favorites or Featured */}
       <section className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="size-8 rounded-lg bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
-            <Star className="size-4 text-indigo-400" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={cn(
+              "size-8 rounded-lg flex items-center justify-center border transition-colors",
+              showFavorites ? "bg-yellow-500/10 border-yellow-500/20" : "bg-indigo-500/10 border-indigo-500/20"
+            )}>
+              <Star className={cn("size-4", showFavorites ? "text-yellow-500 fill-yellow-500" : "text-indigo-400")} />
+            </div>
+            <h2 className="text-xl font-bold text-foreground">
+              {showFavorites ? "Your Favorite Tools" : "Featured Tools"}
+            </h2>
           </div>
-          <h2 className="text-xl font-bold text-foreground">Featured Tools</h2>
+          {showFavorites && (
+            <Badge variant="outline" className="bg-yellow-500/5 border-yellow-500/20 text-yellow-500/80 text-[10px] uppercase tracking-widest px-2.5">
+              Pinned
+            </Badge>
+          )}
         </div>
         
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredTools.map((tool, i) => (
+        <div className={cn(
+          "grid gap-4",
+          showFavorites 
+            ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" 
+            : "sm:grid-cols-2 lg:grid-cols-3"
+        )}>
+          {displayTools.map((tool, i) => (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: 0.1 * i, type: "spring", stiffness: 50 }}
+              transition={{ delay: 0.05 * i, type: "spring", stiffness: 50 }}
               key={tool.id}
             >
-              <Link href={tool.href} className="block h-full group">
-                <Card className="h-full transition-all duration-300 border-indigo-500/10 bg-gradient-to-br from-zinc-900/50 to-zinc-900 hover:border-indigo-500/30 hover:shadow-indigo-500/5 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <CardHeader className="p-6 relative z-10">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex size-12 items-center justify-center rounded-xl bg-zinc-800 group-hover:bg-indigo-500/20 transition-colors border border-white/5">
+              <Link href={showFavorites ? (tool as any).route : (tool as Tool).href} className="block h-full group">
+                <Card className={cn(
+                  "h-full transition-all duration-300 overflow-hidden relative",
+                  showFavorites 
+                    ? "bg-zinc-900/30 border-white/5 hover:border-yellow-500/30 hover:bg-zinc-900/60"
+                    : "border-indigo-500/10 bg-gradient-to-br from-zinc-900/50 to-zinc-900 hover:border-indigo-500/30"
+                )}>
+                  <div className={cn(
+                    "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500",
+                    showFavorites ? "bg-yellow-500/5" : "bg-gradient-to-br from-indigo-500/5 to-purple-500/5"
+                  )} />
+                  
+                  <CardHeader className={cn(
+                    "relative z-10",
+                    showFavorites ? "p-4 flex flex-row items-center gap-3 space-y-0" : "p-6"
+                  )}>
+                    {!showFavorites && (
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex size-12 items-center justify-center rounded-xl bg-zinc-800 group-hover:bg-indigo-500/20 transition-colors border border-white/5">
+                          {(() => {
+                            const Icon = iconMap[tool.icon] || Star;
+                            return <Icon className="size-5 text-zinc-400 group-hover:text-indigo-400 transition-colors" />;
+                          })()}
+                        </div>
+                        <ArrowRight className="size-4 text-zinc-600 group-hover:text-white transition-all transform group-hover:translate-x-1" />
+                      </div>
+                    )}
+                    
+                    {showFavorites && (
+                      <div className="size-8 shrink-0 rounded-lg bg-zinc-800 flex items-center justify-center border border-white/5 group-hover:border-yellow-500/30 transition-colors">
                         {(() => {
                           const Icon = iconMap[tool.icon] || Star;
-                          return <Icon className="size-5 text-zinc-400 group-hover:text-indigo-400 transition-colors" />;
+                          return <Icon className="size-4 text-zinc-400 group-hover:text-yellow-500 transition-colors" />;
                         })()}
                       </div>
-                      <ArrowRight className="size-4 text-zinc-600 group-hover:text-white transition-all transform group-hover:translate-x-1" />
+                    )}
+
+                    <div className="min-w-0">
+                      <CardTitle className={cn(
+                        "truncate transition-colors",
+                        showFavorites ? "text-sm font-medium group-hover:text-yellow-500" : "text-lg mb-2"
+                      )}>
+                        {tool.name}
+                      </CardTitle>
+                      {!showFavorites && (
+                        <CardDescription className="text-base text-zinc-400 line-clamp-2">
+                          {(tool as Tool).description}
+                        </CardDescription>
+                      )}
                     </div>
-                    <CardTitle className="text-lg mb-2">{tool.name}</CardTitle>
-                    <CardDescription className="text-base text-zinc-400 line-clamp-2">{tool.description}</CardDescription>
                   </CardHeader>
                 </Card>
               </Link>
@@ -96,7 +154,7 @@ export function ClientHome({ toolCategories, featuredTools }: ClientHomeProps) {
               ))}
             </div>
 
-            {/* AD SLOT: Native Sponsored Unit */}
+            {/* AD SLOT: GitHub CTA */}
             {idx === 0 && (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -111,12 +169,14 @@ export function ClientHome({ toolCategories, featuredTools }: ClientHomeProps) {
                     <h3 className="text-2xl font-bold text-white tracking-tight">Need something custom?</h3>
                     <p className="text-sm text-zinc-400 max-w-lg">All tools are open source. If you need a specific utility, you can build it or request it on GitHub.</p>
                   </div>
-                  <button 
-                    onClick={() => premium("Github", "Redirecting to repository...")}
-                    className="relative z-10 whitespace-nowrap px-8 py-4 bg-white text-black font-bold text-sm rounded-2xl hover:bg-indigo-500 hover:text-white transition-all shadow-[0_0_30px_rgba(255,255,255,0.05)] active:scale-95"
+                  <a
+                    href="https://github.com/beingayandey/ayan-dev-tools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative z-10 whitespace-nowrap px-8 py-4 bg-white text-black font-bold text-sm rounded-2xl hover:bg-indigo-500 hover:text-white transition-all shadow-[0_0_30px_rgba(255,255,255,0.05)] active:scale-95 flex items-center justify-center"
                   >
                     View on GitHub
-                  </button>
+                  </a>
                   <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
                      <Sparkles className="size-12 text-indigo-500/20 animate-pulse" />
                   </div>

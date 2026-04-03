@@ -19,6 +19,8 @@ import {
   SidebarFooter,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useFavorites, FavoriteTool } from "@/hooks/use-favorites";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +33,23 @@ import { iconMap } from "@/lib/icon-map";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { favorites, isFavorite, toggleFavorite, isLoaded } = useFavorites();
+
+  const handleFavoriteClick = (e: React.MouseEvent, tool: any, isFav: boolean) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // In the sidebar, 'tool' might have 'href' (from data.ts) or 'route' (from hook)
+    const route = tool.href || tool.route;
+    
+    const fav: FavoriteTool = {
+      id: tool.id,
+      name: tool.name,
+      route: route,
+      icon: tool.icon,
+    };
+    toggleFavorite(fav);
+  };
 
   return (
     <Sidebar
@@ -71,7 +90,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="pt-2">
+      <SidebarContent className="pt-2 overflow-y-auto custom-scrollbar" data-lenis-prevent>
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -90,9 +109,56 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
 
+        {/* Dynamic Favorites Section */}
+        {isLoaded && favorites.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-zinc-500">
+              <Star className="size-3 text-yellow-500 fill-yellow-500" />
+              Pinned Favorites
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {favorites.map((tool) => {
+                  const Icon = iconMap[tool.icon] || Star;
+                  const isActive = pathname === tool.route;
+                  const favorited = isFavorite(tool.id);
+
+                  return (
+                    <SidebarMenuItem key={tool.id}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive}
+                        tooltip={tool.name}
+                        className="text-zinc-400 hover:text-white data-[active=true]:bg-indigo-500/10 data-[active=true]:text-indigo-400 group/item"
+                      >
+                        <Link href={tool.route} prefetch={false} className="flex-1">
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <Icon className="size-4 shrink-0" />
+                            <span className="font-medium truncate">{tool.name}</span>
+                          </div>
+                          
+                          <button
+                            onClick={(e) => handleFavoriteClick(e, tool, favorited)}
+                            className={cn(
+                              "size-6 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-all rounded-md shrink-0",
+                              favorited ? "text-yellow-500 opacity-100" : "text-zinc-600 hover:text-yellow-500 hover:bg-yellow-500/10"
+                            )}
+                          >
+                            <Star className={cn("size-3", favorited && "fill-yellow-500")} />
+                          </button>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-zinc-500">
-            <Star className="size-3 text-indigo-400" />
+            <Sparkles className="size-3 text-indigo-400" />
             Flagship Workflows
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -100,17 +166,31 @@ export function AppSidebar() {
               {featuredTools.map((tool) => {
                 const Icon = iconMap[tool.icon] || Star;
                 const isActive = pathname === tool.href;
+                const favorited = isFavorite(tool.id);
+
                 return (
                   <SidebarMenuItem key={tool.id}>
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
                       tooltip={tool.name}
-                      className="text-zinc-400 hover:text-white data-[active=true]:bg-indigo-500/10 data-[active=true]:text-indigo-400"
+                      className="text-zinc-400 hover:text-white data-[active=true]:bg-indigo-500/10 data-[active=true]:text-indigo-400 group/item"
                     >
-                      <Link href={tool.href} prefetch={false}>
-                        <Icon className="size-4" />
-                        <span className="font-medium">{tool.name}</span>
+                      <Link href={tool.href} prefetch={false} className="flex-1">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <Icon className="size-4 shrink-0" />
+                          <span className="font-medium truncate">{tool.name}</span>
+                        </div>
+                        
+                        <button
+                          onClick={(e) => handleFavoriteClick(e, tool, favorited)}
+                          className={cn(
+                            "size-6 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-all rounded-md shrink-0",
+                            favorited ? "text-yellow-500 opacity-100" : "text-zinc-600 hover:text-yellow-500 hover:bg-yellow-500/10"
+                          )}
+                        >
+                          <Star className={cn("size-3", favorited && "fill-yellow-500")} />
+                        </button>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -130,17 +210,31 @@ export function AppSidebar() {
                 {category.tools.map((tool) => {
                   const Icon = iconMap[tool.icon] || Star;
                   const isActive = pathname === tool.href;
+                  const favorited = isFavorite(tool.id);
+
                   return (
                     <SidebarMenuItem key={tool.id}>
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
                         tooltip={tool.name}
-                        className="text-zinc-400 hover:text-white data-[active=true]:bg-indigo-500/10 data-[active=true]:text-indigo-400"
+                        className="text-zinc-400 hover:text-white data-[active=true]:bg-indigo-500/10 data-[active=true]:text-indigo-400 group/item"
                       >
-                        <Link href={tool.href} prefetch={false}>
-                          <Icon className="size-4" />
-                          <span className="font-medium">{tool.name}</span>
+                        <Link href={tool.href} prefetch={false} className="flex-1">
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <Icon className="size-4 shrink-0" />
+                            <span className="font-medium truncate">{tool.name}</span>
+                          </div>
+                          
+                          <button
+                            onClick={(e) => handleFavoriteClick(e, tool, favorited)}
+                            className={cn(
+                              "size-6 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-all rounded-md shrink-0",
+                              favorited ? "text-yellow-500 opacity-100" : "text-zinc-600 hover:text-yellow-500 hover:bg-yellow-500/10"
+                            )}
+                          >
+                            <Star className={cn("size-3", favorited && "fill-yellow-500")} />
+                          </button>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

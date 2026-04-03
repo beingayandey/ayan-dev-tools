@@ -9,6 +9,8 @@ import { AdZone } from "@/components/ad-zone";
 import { Toaster } from "@/components/ui/toaster";
 import { LenisWrapper } from "@/components/lenis-wrapper";
 import { Analytics } from "@vercel/analytics/next";
+import { BackgroundRenderer } from "@/components/background-renderer";
+import { FavoritesProvider } from "@/context/favorites-context";
 
 const fontInter = Inter({
   subsets: ["latin"],
@@ -52,7 +54,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${fontInter.variable} ${fontOutfit.variable} ${fontMono.variable} dark`}
     >
-      <body className="font-sans antialiased text-foreground">
+      <body className="font-sans antialiased text-foreground custom-scrollbar">
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){try{var t=localStorage.getItem("theme");if(t==="light"){document.documentElement.classList.remove("dark")}}catch(e){}})()`}
         </Script>
@@ -71,18 +73,22 @@ export default function RootLayout({
           `}
         </Script>
         <Toaster />
-        <SidebarProvider className="bg-transparent">
-          <AppSidebar />
-          <SidebarInset className="bg-transparent flex flex-col min-h-screen">
-            <AppHeader />
-            {/* ... */}
-            <div className="flex flex-1 overflow-hidden">
-              <main className="flex-1 bg-transparent relative">
-                <LenisWrapper>{children}</LenisWrapper>
-              </main>
-            </div>
-          </SidebarInset>
-        </SidebarProvider>
+        <BackgroundRenderer />
+        <FavoritesProvider>
+          <LenisWrapper>
+            <SidebarProvider className="bg-transparent min-h-screen relative">
+              <AppSidebar />
+              <SidebarInset className="bg-transparent flex flex-col flex-1 min-h-screen">
+                <AppHeader />
+                <div className="flex flex-1 relative">
+                  <main className="flex-1 bg-transparent relative custom-scrollbar overscroll-contain pb-10 sm:pb-20">
+                    {children}
+                  </main>
+                </div>
+              </SidebarInset>
+            </SidebarProvider>
+          </LenisWrapper>
+        </FavoritesProvider>
         <Analytics />
       </body>
     </html>

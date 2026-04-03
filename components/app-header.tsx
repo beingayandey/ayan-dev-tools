@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GlobalSearch } from "@/components/search/GlobalSearch";
 import { iconMap } from "@/lib/icon-map";
-
 export function AppHeader() {
   const pathname = usePathname();
 
@@ -28,7 +27,7 @@ export function AppHeader() {
 
       <div className="flex-1 sm:flex-initial min-w-0">
         {tool ? (
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
               {(() => {
                 const Icon = iconMap[tool.icon] || Star;
@@ -36,6 +35,7 @@ export function AppHeader() {
               })()}
               <h1 className="text-xs sm:text-sm font-semibold tracking-wide text-foreground truncate">{tool.name}</h1>
             </div>
+
             {category && (
               <Badge variant="outline" className="hidden md:inline-flex bg-white/5 border-white/10 text-xs font-medium tracking-wide whitespace-nowrap">
                 {category.name}

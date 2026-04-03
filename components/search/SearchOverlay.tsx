@@ -116,7 +116,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           />
 
           {/* Modal Container */}
-          <div className="fixed inset-0 z-[101] flex items-start justify-center sm:pt-32 p-0 sm:px-4">
+          <div className="fixed inset-0 z-[101] flex items-start justify-center p-3 sm:pt-32 sm:px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 stiffness: 400,
                 damping: 40,
               }}
-              className="w-full max-w-2xl h-[100dvh] sm:h-auto bg-zinc-950 border-0 sm:border border-white/10 rounded-none sm:rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,1)] overflow-hidden flex flex-col"
+              className="w-[calc(100vw-24px)] max-w-2xl max-h-[85vh] sm:max-h-[calc(100vh-200px)] bg-zinc-950 border border-white/10 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,1)] flex flex-col relative"
             >
               <div className="shrink-0 flex items-center">
                 <div className="flex-1">
@@ -144,7 +144,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 </button>
               </div>
               
-              <div className="flex-1 min-h-0 overflow-y-auto">
+              <div className="flex-1 min-h-0 overflow-y-auto" data-lenis-prevent>
                 <SearchSuggestions
                   items={filteredItems}
                   selectedIndex={selectedIndex}

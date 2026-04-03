@@ -27,7 +27,7 @@ export function SearchInput({ value, onChange, onClose }: SearchInputProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search tools, workflows, or categories..."
-        className="flex-1 bg-transparent border-none outline-none text-lg text-white placeholder:text-zinc-500 font-medium"
+        className="flex-1 bg-transparent border-none outline-none text-lg text-white placeholder:text-zinc-500 font-medium min-w-0"
         aria-label="Search everything"
       />
       <div className="flex items-center gap-2">

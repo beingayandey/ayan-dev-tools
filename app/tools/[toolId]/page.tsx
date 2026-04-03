@@ -624,7 +624,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
           <p className="text-sm font-medium text-muted-foreground">
             Built by{" "}
             <a
-              href="https://ayan-dev-tools.vercel.app"
+              href="https://github.com/beingayandey"
               className="text-indigo-400 hover:underline"
             >
               Ayan Dey

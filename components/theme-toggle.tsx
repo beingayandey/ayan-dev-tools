@@ -13,18 +13,54 @@ export function ThemeToggle() {
     setMounted(true)
   }, [])
 
-  function toggle() {
+  const toggle = (e?: React.MouseEvent) => {
     const next = !dark
+    const root = document.documentElement
+
+    // Check if View Transition is supported
+    if (!(document as any).startViewTransition) {
+      updateTheme(next)
+      return
+    }
+
+    // Capture click coordinates for the circular reveal
+    if (e) {
+      root.style.setProperty("--x", `${e.clientX}px`)
+      root.style.setProperty("--y", `${e.clientY}px`)
+    }
+
+    // ✨ Circular Wave Transition
+    ;(document as any).startViewTransition(() => {
+      updateTheme(next)
+    })
+  }
+
+  const updateTheme = (next: boolean) => {
     setDark(next)
     document.documentElement.classList.toggle("dark", next)
     localStorage.setItem("theme", next ? "dark" : "light")
   }
 
-  if (!mounted) return <Button variant="ghost" size="icon" className="size-8" disabled><Sun className="size-4" /></Button>
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="size-8" disabled>
+        <Sun className="size-4" />
+      </Button>
+    )
+  }
 
   return (
-    <Button variant="ghost" size="icon" className="size-8" onClick={toggle}>
-      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+    <Button
+      variant="ghost"
+      size="icon"
+      className="size-8 transition-transform hover:scale-105 active:scale-95"
+      onClick={toggle}
+    >
+      {dark ? (
+        <Sun className="size-4 text-yellow-400" />
+      ) : (
+        <Moon className="size-4 text-indigo-400" />
+      )}
       <span className="sr-only">Toggle theme</span>
     </Button>
   )

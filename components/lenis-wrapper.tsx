@@ -5,15 +5,14 @@ import "lenis/dist/lenis.css";
 
 export function LenisWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <ReactLenis 
-      root 
+    <ReactLenis
+      root
       options={{
-        // Disable Lenis on touch devices to use native momentum scrolling
-        // which is significantly smoother on Android/iOS Chrome
-        smoothWheel: true,
-        syncTouch: false, 
-        touchMultiplier: 2,
         duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        syncTouch: false,
+        touchMultiplier: 2,
       }}
     >
       {children}
