@@ -381,9 +381,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
       {/* 🧠 SEO: High-Conversion Header Structure */}
       <header className="mb-10 text-center sm:text-left">
         {/* Dynamic Trust Signal */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 text-xs font-semibold tracking-wide border border-emerald-500/20">
+        <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 text-xs font-semibold tracking-wide border border-emerald-500/20 will-change-transform">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
           100% Local Processing • +{allTools.length} Free Tools Available
@@ -444,7 +444,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-7 space-y-8">
             <div className="p-1 rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-primary/5 border border-primary/10 shadow-2xl shadow-primary/5">
-              <div className="p-8 sm:p-10 rounded-[calc(1.5rem-4px)] bg-card/50 backdrop-blur-sm">
+              <div className="p-8 sm:p-10 rounded-[calc(1.5rem-4px)] bg-card/50 sm:backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
                     <Sparkles className="size-5" />
@@ -479,7 +479,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
               {(content.whyUseIt || []).map((benefit: string, i: number) => (
                 <div
                   key={i}
-                  className="group p-5 rounded-2xl border border-border/50 bg-card hover:bg-muted/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+                  className="group p-5 rounded-2xl border border-border/50 bg-card hover:bg-muted/50 transition-[transform,shadow,background-color] duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-1 p-1.5 rounded-full bg-emerald-500/10 text-emerald-500">
@@ -531,7 +531,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
               {(seo.useCases || []).map((useCase: string, i: number) => (
                 <div
                   key={i}
-                  className="p-6 rounded-2xl border border-border/50 bg-muted/20 hover:border-primary/20 transition-all group"
+                  className="p-6 rounded-2xl border border-border/50 bg-muted/20 hover:border-primary/20 transition-[border-color] group"
                 >
                   <div className="size-2 rounded-full bg-primary/40 mb-4 group-hover:scale-x-150 transition-all origin-left" />
                   <p className="text-sm font-semibold text-muted-foreground leading-relaxed">
@@ -593,7 +593,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
               (faq: { question: string; answer: string }, i: number) => (
                 <Card
                   key={i}
-                  className="border-border/50 bg-card/30 backdrop-blur-md hover:border-primary/30 transition-all duration-500 overflow-hidden group"
+                  className="border-border/50 bg-card/30 sm:backdrop-blur-md hover:border-primary/30 transition-shadow duration-500 overflow-hidden group"
                 >
                   <CardHeader className="pb-4">
                     <CardTitle className="text-lg font-bold text-foreground leading-tight flex items-start gap-3">

@@ -133,7 +133,7 @@
 }
 body::before {
   content: "";
-  position: absolute;
+  position: fixed; /* Use fixed positioning instead of attachment: fixed for better mobile support */
   top: 0;
   left: 0;
   right: 0;
@@ -144,6 +144,16 @@ body::before {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   z-index: -1;
+  will-change: transform; /* Hint to the browser for GPU optimization */
+  transform: translateZ(0); /* Force GPU layer creation */
+}
+
+/* Optimization for mobile devices where fixed backgrounds are unstable */
+@media (max-width: 768px) {
+  body::before {
+    position: absolute;
+    background-attachment: scroll;
+    height: 100vh; /* Limit background height on mobile to reduce paint area */
+  }
 }
