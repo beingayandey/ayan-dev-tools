@@ -7,6 +7,8 @@ import { AppHeader } from "@/components/app-header";
 import { AppRail } from "@/components/app-rail";
 import { AdZone } from "@/components/ad-zone";
 import { Toaster } from "@/components/ui/toaster";
+import { LenisWrapper } from "@/components/lenis-wrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 const fontInter = Inter({
   subsets: ["latin"],
@@ -51,6 +53,20 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){try{var t=localStorage.getItem("theme");if(t==="light"){document.documentElement.classList.remove("dark")}}catch(e){}})()`}
         </Script>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-B5JR8YZ762"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-B5JR8YZ762');
+          `}
+        </Script>
         <Toaster />
         <SidebarProvider className="bg-transparent">
           <AppSidebar />
@@ -58,12 +74,15 @@ export default function RootLayout({
             <AppHeader />
             {/* ... */}
             <div className="flex flex-1 overflow-hidden">
-              <main className="flex-1 overflow-auto bg-transparent relative">
-                {children}
+              <main className="flex-1 bg-transparent relative">
+                <LenisWrapper>
+                  {children}
+                </LenisWrapper>
               </main>
             </div>
           </SidebarInset>
         </SidebarProvider>
+        <Analytics />
       </body>
     </html>
   );
