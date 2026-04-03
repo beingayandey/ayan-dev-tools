@@ -30,9 +30,12 @@ export const metadata: Metadata = {
   description:
     "Fast, privacy-first developer tools built by Ayan Dey. 100% clinet-side, zero data collection.",
   icons: {
-    icon: "/delphi-lowlod.png",
-    shortcut: "/delphi-lowlod.png",
-    apple: "/delphi-lowlod.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
+  verification: {
+    google: "_l140NmmN3K2Y56GIQKwX0wRhY5hZaXE7uz2uz3Cv0U",
   },
 };
 
@@ -75,9 +78,7 @@ export default function RootLayout({
             {/* ... */}
             <div className="flex flex-1 overflow-hidden">
               <main className="flex-1 bg-transparent relative">
-                <LenisWrapper>
-                  {children}
-                </LenisWrapper>
+                <LenisWrapper>{children}</LenisWrapper>
               </main>
             </div>
           </SidebarInset>
