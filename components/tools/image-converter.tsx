@@ -399,18 +399,27 @@ export function ImageConverterTool() {
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-    const files = Array.from(e.dataTransfer.files).filter((f) =>
-      f.type.startsWith("image/")
-    );
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    const files = Array.from(e.dataTransfer.files).filter((f) => {
+      const isImage = f.type.startsWith("image/");
+      const isTooLarge = f.size > MAX_SIZE;
+      if (isTooLarge) {
+        console.warn(`File ${f.name} skipped: exceeds 10MB limit.`);
+      }
+      return isImage && !isTooLarge;
+    });
     setImages((prev) => [...prev, ...files]);
     setConverted([]);
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const files = Array.from(e.target.files).filter((f) =>
-        f.type.startsWith("image/")
-      );
+      const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+      const files = Array.from(e.target.files).filter((f) => {
+        const isImage = f.type.startsWith("image/");
+        const isTooLarge = f.size > MAX_SIZE;
+        return isImage && !isTooLarge;
+      });
       setImages((prev) => [...prev, ...files]);
       setConverted([]);
     }
@@ -571,7 +580,10 @@ export function ImageConverterTool() {
         <Upload className="size-12 mx-auto text-muted-foreground mb-4" />
         <p className="text-lg font-medium">Drop images here</p>
         <p className="text-sm text-muted-foreground mt-1">
-          or click to select files
+          Max 10MB per file • Up to 10 images at once
+        </p>
+        <p className="text-xs text-indigo-500/60 mt-3 font-medium uppercase tracking-widest">
+          Optimized for WebP & AVIF
         </p>
       </div>
 

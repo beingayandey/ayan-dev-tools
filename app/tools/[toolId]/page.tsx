@@ -1,8 +1,5 @@
 import { notFound } from "next/navigation";
-import dynamic from "next/dynamic";
 import {
-  Construction,
-  Star,
   Sparkles,
   Zap,
   CheckCircle2,
@@ -11,315 +8,17 @@ import {
 } from "lucide-react";
 import {
   getToolById,
-  getCategoryByToolId,
   allTools,
   getToolSEO,
 } from "@/lib/tools";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { iconMap } from "@/lib/icon-map";
-
-// Dynamic imports for tool components
-const toolComponents: Record<string, React.ComponentType> = {
-  "px-to-rem": dynamic(() =>
-    import("@/components/tools/px-to-rem").then((mod) => mod.PxToRemTool),
-  ),
-  "word-counter": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "character-count-online": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "essay-word-counter": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "secure-text-analyzer": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "seo-content-length-checker": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "reading-time-calculator": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "bulk-character-count-pro": dynamic(() =>
-    import("@/components/tools/word-counter").then(
-      (mod) => mod.WordCounterTool,
-    ),
-  ),
-  "qr-generator": dynamic(() =>
-    import("@/components/tools/qr-generator").then(
-      (mod) => mod.QrGeneratorTool,
-    ),
-  ),
-  "code-generator": dynamic(() =>
-    import("@/components/tools/code-generator").then(
-      (mod) => mod.CodeGeneratorTool,
-    ),
-  ),
-  "image-converter": dynamic(() =>
-    import("@/components/tools/image-converter").then(
-      (mod) => mod.ImageConverterTool,
-    ),
-  ),
-  "artwork-enhancer": dynamic(() =>
-    import("@/components/tools/artwork-enhancer").then(
-      (mod) => mod.ArtworkEnhancerTool,
-    ),
-  ),
-  "regex-tester": dynamic(() =>
-    import("@/components/tools/regex-tester").then(
-      (mod) => mod.RegexTesterTool,
-    ),
-  ),
-  "line-height-calc": dynamic(() =>
-    import("@/components/tools/line-height-calc").then(
-      (mod) => mod.LineHeightCalcTool,
-    ),
-  ),
-  "placeholder-generator": dynamic(() =>
-    import("@/components/tools/placeholder-generator").then(
-      (mod) => mod.PlaceholderGeneratorTool,
-    ),
-  ),
-  "meta-tag-generator": dynamic(() =>
-    import("@/components/tools/meta-tag-generator").then(
-      (mod) => mod.MetaTagGeneratorTool,
-    ),
-  ),
-  "paper-sizes": dynamic(() =>
-    import("@/components/tools/paper-sizes").then((mod) => mod.PaperSizesTool),
-  ),
-  "svg-optimiser": dynamic(() =>
-    import("@/components/tools/svg-optimiser").then(
-      (mod) => mod.SvgOptimiserTool,
-    ),
-  ),
-  "favicon-generator": dynamic(() =>
-    import("@/components/tools/favicon-generator").then(
-      (mod) => mod.FaviconGeneratorTool,
-    ),
-  ),
-  "image-splitter": dynamic(() =>
-    import("@/components/tools/image-splitter").then(
-      (mod) => mod.ImageSplitterTool,
-    ),
-  ),
-  "typo-calc": dynamic(() =>
-    import("@/components/tools/typo-calc").then((mod) => mod.TypoCalcTool),
-  ),
-  "glyph-browser": dynamic(() =>
-    import("@/components/tools/glyph-browser").then(
-      (mod) => mod.GlyphBrowserTool,
-    ),
-  ),
-  "font-explorer": dynamic(() =>
-    import("@/components/tools/font-explorer").then(
-      (mod) => mod.FontExplorerTool,
-    ),
-  ),
-  "colour-converter": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "hex-to-rgb": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "rgb-to-hex": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "hex-to-hsl": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "color-converter-css": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "tailwind-color-converter": dynamic(() =>
-    import("@/components/tools/colour-converter").then(
-      (mod) => mod.ColourConverterTool,
-    ),
-  ),
-  "tailwind-shades": dynamic(() =>
-    import("@/components/tools/tailwind-shades").then(
-      (mod) => mod.TailwindShadesTool,
-    ),
-  ),
-  "harmony-generator": dynamic(() =>
-    import("@/components/tools/harmony-generator").then(
-      (mod) => mod.HarmonyGeneratorTool,
-    ),
-  ),
-  "palette-generator": dynamic(() =>
-    import("@/components/tools/palette-generator").then(
-      (mod) => mod.PaletteGeneratorTool,
-    ),
-  ),
-  "palette-collection": dynamic(() =>
-    import("@/components/tools/palette-collection").then(
-      (mod) => mod.PaletteCollectionTool,
-    ),
-  ),
-  "tailwind-cheatsheet": dynamic(() =>
-    import("@/components/tools/tailwind-cheatsheet").then(
-      (mod) => mod.TailwindCheatsheetTool,
-    ),
-  ),
-  "markdown-writer": dynamic(() =>
-    import("@/components/tools/markdown-writer").then(
-      (mod) => mod.MarkdownWriterTool,
-    ),
-  ),
-  "social-cropper": dynamic(() =>
-    import("@/components/tools/social-cropper").then(
-      (mod) => mod.SocialCropperTool,
-    ),
-  ),
-  "matte-generator": dynamic(() =>
-    import("@/components/tools/matte-generator").then(
-      (mod) => mod.MatteGeneratorTool,
-    ),
-  ),
-  "scroll-generator": dynamic(() =>
-    import("@/components/tools/scroll-generator").then(
-      (mod) => mod.ScrollGeneratorTool,
-    ),
-  ),
-  watermarker: dynamic(() =>
-    import("@/components/tools/watermarker").then((mod) => mod.WatermarkerTool),
-  ),
-  "contrast-checker": dynamic(() =>
-    import("@/components/tools/contrast-checker").then(
-      (mod) => mod.ContrastCheckerTool,
-    ),
-  ),
-  "colorblind-sim": dynamic(() =>
-    import("@/components/tools/colorblind-sim").then(
-      (mod) => mod.ColorblindSimTool,
-    ),
-  ),
-  "background-remover": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "transparent-png-generator": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "e-commerce-bg-remover": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "hd-background-remover": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "privacy-bg-remover": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "instant-cutout-tool": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "designer-bg-remover": dynamic(() =>
-    import("@/components/tools/background-remover").then(
-      (mod) => mod.BackgroundRemoverTool,
-    ),
-  ),
-  "zine-imposer": dynamic(() =>
-    import("@/components/tools/zine-imposer").then(
-      (mod) => mod.ZineImposerTool,
-    ),
-  ),
-  "gradient-generator": dynamic(() =>
-    import("@/components/tools/gradient-generator").then(
-      (mod) => mod.GradientGeneratorTool,
-    ),
-  ),
-  "sci-calc": dynamic(() =>
-    import("@/components/tools/sci-calc").then((mod) => mod.SciCalcTool),
-  ),
-  "graph-calc": dynamic(() =>
-    import("@/components/tools/graph-calc").then((mod) => mod.GraphCalcTool),
-  ),
-  "algebra-calc": dynamic(() =>
-    import("@/components/tools/algebra-calc").then(
-      (mod) => mod.AlgebraCalcTool,
-    ),
-  ),
-  "base-converter": dynamic(() =>
-    import("@/components/tools/base-converter").then(
-      (mod) => mod.BaseConverterTool,
-    ),
-  ),
-  "time-calc": dynamic(() =>
-    import("@/components/tools/time-calc").then((mod) => mod.TimeCalcTool),
-  ),
-  "unit-converter": dynamic(() =>
-    import("@/components/tools/unit-converter").then(
-      (mod) => mod.UnitConverterTool,
-    ),
-  ),
-  encoder: dynamic(() =>
-    import("@/components/tools/encoder").then((mod) => mod.EncoderTool),
-  ),
-  "image-tracer": dynamic(() =>
-    import("@/components/tools/image-tracer").then(
-      (mod) => mod.ImageTracerTool,
-    ),
-  ),
-  "guillotine-director": dynamic(() =>
-    import("@/components/tools/guillotine-director").then(
-      (mod) => mod.GuillotineDirectorTool,
-    ),
-  ),
-  "pdf-preflight": dynamic(() =>
-    import("@/components/tools/pdf-preflight").then(
-      (mod) => mod.PdfPreflightTool,
-    ),
-  ),
-  "shavian-transliterator": dynamic(() =>
-    import("@/components/tools/shavian-transliterator").then(
-      (mod) => mod.ShavianTransliteratorTool,
-    ),
-  ),
-  imposer: dynamic(() =>
-    import("@/components/tools/imposer").then((mod) => mod.ImposerTool),
-  ),
-};
+import ToolRenderer from "@/components/tool-renderer";
 
 interface ToolPageProps {
   params: Promise<{
@@ -371,7 +70,6 @@ export default async function ToolPage({ params }: ToolPageProps) {
   }
 
   const seo = getToolSEO(tool);
-  const ToolComponent = toolComponents[toolId];
 
   // Destructure for cleaner access to nested SEO data
   const { seo: meta, content } = seo;
@@ -402,40 +100,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
       {/* ⚡ Client component boundary - Interactive logic lives here */}
       <section className="mb-16 border border-border/50 rounded-2xl bg-card shadow-sm overflow-hidden">
-        {ToolComponent ? (
-          <ToolComponent />
-        ) : (
-          <div className="p-8 sm:p-12">
-            <Card className="border-dashed border-2 shadow-none max-w-2xl mx-auto">
-              <CardHeader className="text-center pb-4">
-                <div className="flex justify-center mb-4">
-                  <div className="flex size-16 items-center justify-center rounded-full bg-muted">
-                    <Construction className="size-8 text-muted-foreground" />
-                  </div>
-                </div>
-                <CardTitle className="text-xl text-foreground">
-                  Coming Soon
-                </CardTitle>
-                <CardDescription className="max-w-md mx-auto">
-                  This tool is currently under construction. Check back soon for
-                  the full implementation.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-muted/50 rounded-lg p-8 text-center">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Tool interface will appear here
-                  </p>
-                  <div className="flex flex-col gap-3 max-w-sm mx-auto">
-                    <div className="h-10 bg-muted rounded-md animate-pulse" />
-                    <div className="h-24 bg-muted rounded-md animate-pulse" />
-                    <div className="h-10 bg-primary/20 rounded-md animate-pulse" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        <ToolRenderer toolId={toolId} />
       </section>
 
       {/* 🧾 SEO: High-value Product Deep Dive */}
