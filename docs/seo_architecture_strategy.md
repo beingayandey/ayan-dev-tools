@@ -15,7 +15,7 @@ app/
 │
 └── tools/
     ├── layout.tsx            // Shared layout for all tools (e.g., Breadcrumbs)
-    ├── [toolId]/             // Dynamic route mapping 
+    ├── [toolId]/             // Dynamic route mapping
     │   ├── page.tsx          // ⚡ Server Component: Fetches data & renders SEO content
     │   └── loading.tsx       // SSR streaming fallback
     │
@@ -42,27 +42,27 @@ Our central data store moves beyond simple UI properties. It now serves as a **C
 // lib/tools.ts
 
 export interface ToolSEO {
-  title: string;          // Highly clickable SERP title (e.g., "Free Base64 Encoder | Secure & Fast")
-  metaDesc: string;       // CTR-focused description (max 155 chars)
-  keywords: string[];     // Intent-focused keywords
+  title: string; // Highly clickable SERP title (e.g., "Free Base64 Encoder | Secure & Fast")
+  metaDesc: string; // CTR-focused description (max 155 chars)
+  keywords: string[]; // Intent-focused keywords
   structuredData: Record<string, any>; // Schema.org payloads
-  
+
   // High-Conversion Content Layer
-  hook: string;           // Emotion + speed + trust (e.g., "Bypass sluggish servers. Strip backgrounds instantly. Join 42+ free tools.")
-  
+  hook: string; // Emotion + speed + trust (e.g., "Bypass sluggish servers. Strip backgrounds instantly. Join 42+ free tools.")
+
   // Extended Content for the page body (Semantic HTML)
-  intro: string;          // Brutally contrasts our local processing vs generic sluggish competitor sites
+  intro: string; // Brutally contrasts our local processing vs generic sluggish competitor sites
   whyUseIt: string[];
   howToUse: string[];
   faqs: { question: string; answer: string }[];
 }
 
 export interface Tool {
-  id: string;             // (e.g., "base-converter")
-  name: string;           // (UI Display name)
-  description: string;    // Short UI description
+  id: string; // (e.g., "base-converter")
+  name: string; // (UI Display name)
+  description: string; // Short UI description
   icon: LucideIcon;
-  seo: ToolSEO;           // Full SEO vertical payload
+  seo: ToolSEO; // Full SEO vertical payload
 }
 ```
 
@@ -79,7 +79,11 @@ import { getToolById } from "@/lib/tools";
 import dynamic from "next/dynamic";
 
 // Next.js convention to generate SEO metadata dynamically
-export async function generateMetadata({ params }: { params: { toolId: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { toolId: string };
+}) {
   const tool = getToolById(params.toolId);
   if (!tool) return {};
 
@@ -100,7 +104,9 @@ export default function ToolPage({ params }: { params: { toolId: string } }) {
   if (!tool) notFound();
 
   // Dynamically import the heavy client-side tool component
-  const ToolInteractive = dynamic(() => import(`@/components/tools/${tool.id}`));
+  const ToolInteractive = dynamic(
+    () => import(`@/components/tools/${tool.id}`),
+  );
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-12">
@@ -114,13 +120,11 @@ export default function ToolPage({ params }: { params: { toolId: string } }) {
           </span>
           100% Local Processing • +42 Free Tools Available
         </div>
-        
+
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-foreground">
           {tool.seo.title}
         </h1>
-        <p className="text-xl text-primary font-medium mb-4">
-          {tool.seo.hook}
-        </p>
+        <p className="text-xl text-primary font-medium mb-4">{tool.seo.hook}</p>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {tool.seo.intro}
         </p>
@@ -138,12 +142,16 @@ export default function ToolPage({ params }: { params: { toolId: string } }) {
 
         <h2>Core Benefits</h2>
         <ul>
-          {tool.seo.whyUseIt.map((benefit, i) => <li key={i}>{benefit}</li>)}
+          {tool.seo.whyUseIt.map((benefit, i) => (
+            <li key={i}>{benefit}</li>
+          ))}
         </ul>
 
         <h2>How to use the {tool.name}</h2>
         <ol>
-          {tool.seo.howToUse.map((step, i) => <li key={i}>{step}</li>)}
+          {tool.seo.howToUse.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
         </ol>
 
         {/* ❓ SEO: FAQ Section configured for Rich Results */}
@@ -157,9 +165,14 @@ export default function ToolPage({ params }: { params: { toolId: string } }) {
           ))}
         </dl>
       </section>
-      
+
       {/* 📌 Inject Structured Data (JSON-LD) for Rich Snippets */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(tool.seo.structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(tool.seo.structuredData),
+        }}
+      />
     </article>
   );
 }
@@ -175,12 +188,17 @@ Following the Next.js `generateMetadata` API, metadata must go beyond just title
 {
   "title": "Instant Base64 Encoder | Zero Uploads & 100% Secure",
   "description": "Stop trusting random servers with your private strings. Encode text to Base64 instantly in your browser. Fully local processing +42 more free developer tools.",
-  "keywords": ["base64 encoder online", "secure text to base64", "local encode decode text", "no upload base64"],
+  "keywords": [
+    "base64 encoder online",
+    "secure text to base64",
+    "local encode decode text",
+    "no upload base64"
+  ],
   "openGraph": {
     "title": "Secure Base64 Encoder & Decoder",
     "description": "Encode text instantly. Zero tracking, zero server uploads.",
-    "url": "https://delphitools.com/tools/base64-encoder",
-    "siteName": "Zenith Tools",
+    "url": "https://ayan-dev-tools.vercel.app/",
+    "siteName": "Ayan Dev Tools",
     "locale": "en_US",
     "type": "website"
   },
@@ -201,17 +219,17 @@ The copy must understand **User Intent**.
 **Tool Identity**: Background Remover  
 **Search Intent**: The user is frustrated with complex Photoshop tools, horrific wait times, or sketch sites demanding photo uploads.
 
-*   **The Hook**:
-    "Banish agonizing upload times forever. Strip image backgrounds seamlessly on your own hardware with absolute privacy. Explore this and +42 free offline-grade utilities instantly."
-*   **Header (Intro - vs Competitors)**:  
-    "Forget waiting in queues or surrendering your intellectual property to cloud servers. Our edge-aware local processing engine runs entirely within your CPU, delivering razor-sharp transparent PNGs in milliseconds exactly where competing online tools crash or throttle your results."
-*   **What it does**:  
-    "This Background Remover isolates primary focal points in your photography or graphics. Utilizing on-device algorithms, it analyzes high-contrast edges and depth fields to physically drop out unwanted scenery, returning an alpha-layered asset ready for web or print."
-*   **Why use it**:  
-    "Traditional clipping paths take hours. Our local processor eliminates the exhausting pen-tool grind. Because processing runs strictly client-side, large agency files aren’t bottle-necked by agonizing web uploads, and corporate IP remains absolutely secure on your local drive."
-*   **FAQ (For "People Also Ask" Rich Results)**:
-    *   **Q:** *Is the background removal really local?*  
-        **A:** Yes. Unlike standard web converters, the algorithmic processing occurs entirely within your browser's dedicated thread. No graphical data is transmitted to an external server.
+- **The Hook**:
+  "Banish agonizing upload times forever. Strip image backgrounds seamlessly on your own hardware with absolute privacy. Explore this and +42 free offline-grade utilities instantly."
+- **Header (Intro - vs Competitors)**:  
+  "Forget waiting in queues or surrendering your intellectual property to cloud servers. Our edge-aware local processing engine runs entirely within your CPU, delivering razor-sharp transparent PNGs in milliseconds exactly where competing online tools crash or throttle your results."
+- **What it does**:  
+  "This Background Remover isolates primary focal points in your photography or graphics. Utilizing on-device algorithms, it analyzes high-contrast edges and depth fields to physically drop out unwanted scenery, returning an alpha-layered asset ready for web or print."
+- **Why use it**:  
+  "Traditional clipping paths take hours. Our local processor eliminates the exhausting pen-tool grind. Because processing runs strictly client-side, large agency files aren’t bottle-necked by agonizing web uploads, and corporate IP remains absolutely secure on your local drive."
+- **FAQ (For "People Also Ask" Rich Results)**:
+  - **Q:** _Is the background removal really local?_  
+    **A:** Yes. Unlike standard web converters, the algorithmic processing occurs entirely within your browser's dedicated thread. No graphical data is transmitted to an external server.
 
 ---
 
@@ -219,9 +237,9 @@ The copy must understand **User Intent**.
 
 Orphaned pages (pages with no incoming links) will not rank. Authority must flow through the architecture.
 
-1.  **Taxonomy Interlinking**: At the bottom of the "Background Remover", dynamically surface 3 links under *"More Image & Asset Utilities"*. (e.g., Links forward to *Image Format Converter*, *SVG Optimiser*).
+1.  **Taxonomy Interlinking**: At the bottom of the "Background Remover", dynamically surface 3 links under _"More Image & Asset Utilities"_. (e.g., Links forward to _Image Format Converter_, _SVG Optimiser_).
 2.  **Breadcrumbs**: Every tool page must include a standardized breadcrumb trail (`Home > Tools > Images & Assets > Background Remover`) marked up with `BreadcrumbList` schema. This passes link juice back up to categorical hub pages.
-3.  **Contextual Anchor Linking**: Within the "Why use it" body text, hyperlink relevant domain concepts. (e.g., *"If you are optimizing these transparent assets for the web, we highly recommend passing them through our [SVG Vector Minifier](/tools/svg-optimizer)."*)
+3.  **Contextual Anchor Linking**: Within the "Why use it" body text, hyperlink relevant domain concepts. (e.g., _"If you are optimizing these transparent assets for the web, we highly recommend passing them through our [SVG Vector Minifier](/tools/svg-optimizer)."_)
 
 ---
 

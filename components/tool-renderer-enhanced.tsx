@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Zap, Construction, Download, Upload } from "lucide-react";
 import {
@@ -531,7 +531,9 @@ export default function EnhancedToolRenderer({ toolId }: { toolId: string }) {
 
   return (
     <div className="space-y-6">
-      <ToolComponent onOutputChange={handleToolDataUpdate} />
+      {React.createElement(ToolComponent as React.ComponentType<{ onOutputChange?: (data: any) => void }>, {
+        onOutputChange: handleToolDataUpdate
+      })}
 
       {/* Data Flow Engine for connected tools */}
       <DataFlowEngine

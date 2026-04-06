@@ -35,7 +35,12 @@ export const SuggestionEngine: React.FC<SuggestionEngineProps> = ({ currentToolI
     const relatedTools = getRelatedTools(currentToolId);
     const workflows = getSuggestedWorkflows(currentToolId);
 
-    const newSuggestions = [];
+    const newSuggestions: Array<{
+      id: string;
+      title: string;
+      description: string;
+      type: 'next-action' | 'workflow' | 'related' | 'popular' | 'favorite';
+    }> = [];
 
     // Next actions based on current tool
     nextActions.forEach(actionId => {

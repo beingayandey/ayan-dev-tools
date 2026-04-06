@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button, ButtonProps } from './button';
+import { Button } from './button';
 
-interface FeedbackButtonProps extends ButtonProps {
+interface FeedbackButtonProps {
   /** Default action label */
   label: string;
   /** Success label shown after click */
@@ -18,6 +18,18 @@ interface FeedbackButtonProps extends ButtonProps {
   revertDelay?: number;
   /** Show checkmark icon */
   showIcon?: boolean;
+  /** Button variant (passed through) */
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  /** Button size (passed through) */
+  size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg';
+  /** Additional className */
+  className?: string;
+  /** Disabled state */
+  disabled?: boolean;
+  /** Click handler */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  /** Button ref */
+  asChild?: boolean;
 }
 
 export const FeedbackButton: React.FC<FeedbackButtonProps> = ({

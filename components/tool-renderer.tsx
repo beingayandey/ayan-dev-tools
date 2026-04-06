@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Zap, Construction } from "lucide-react";
 import {
@@ -528,5 +528,7 @@ export default function ToolRenderer({ toolId }: { toolId: string }) {
     );
   }
 
-  return <ToolComponent onOutputChange={handleToolDataUpdate} />;
+  return React.createElement(ToolComponent as React.ComponentType<{ onOutputChange?: (data: any) => void }>, {
+    onOutputChange: handleToolDataUpdate
+  });
 }
