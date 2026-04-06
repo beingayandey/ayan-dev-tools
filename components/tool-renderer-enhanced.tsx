@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Zap, Construction } from "lucide-react";
+import { Zap, Construction, Download, Upload } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -13,6 +13,7 @@ import {
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { getToolById } from "@/lib/tools";
 import { useDeveloperOS } from "@/context/developer-os-context";
+import { DataFlowEngine } from "@/components/workspace/data-flow-engine";
 
 // Loading Skeleton for Tools
 const LoadingTool = () => (
@@ -447,7 +448,7 @@ const toolComponents: Record<string, React.ComponentType> = {
   ),
 };
 
-export default function ToolRenderer({ toolId }: { toolId: string }) {
+export default function EnhancedToolRenderer({ toolId }: { toolId: string }) {
   const ToolComponent = toolComponents[toolId];
   const { addRecentTool } = useRecentTools();
   const { recordAction, setContext, updateWorkspaceData } = useDeveloperOS();
@@ -528,5 +529,19 @@ export default function ToolRenderer({ toolId }: { toolId: string }) {
     );
   }
 
-  return <ToolComponent onOutputChange={handleToolDataUpdate} />;
+  return (
+    <div className="space-y-6">
+      <ToolComponent onOutputChange={handleToolDataUpdate} />
+
+      {/* Data Flow Engine for connected tools */}
+      <DataFlowEngine
+        currentToolId={toolId}
+        currentData={toolData}
+        onDataTransfer={(targetToolId, data) => {
+          // This would handle transferring data to another tool
+          console.log(`Transferring data to ${targetToolId}`, data);
+        }}
+      />
+    </div>
+  );
 }

@@ -111,7 +111,7 @@
   }
   @keyframes shimmer {
     100% {
-      transform: translateX(100%);
+      background-position: 200% 0;
     }
   }
   * {
@@ -129,6 +129,44 @@
   h5,
   h6 {
     @apply font-heading tracking-tight;
+  }
+
+  /* Typography Scale */
+  .text-display-4 { @apply text-3xl md:text-4xl font-bold leading-tight; }
+  .text-display-3 { @apply text-4xl md:text-5xl font-bold leading-tight; }
+  .text-display-2 { @apply text-5xl md:text-6xl font-bold leading-tight; }
+  .text-display-1 { @apply text-6xl md:text-7xl font-bold leading-tight; }
+
+  .text-heading-1 { @apply text-2xl md:text-3xl font-bold; }
+  .text-heading-2 { @apply text-xl md:text-2xl font-semibold; }
+  .text-heading-3 { @apply text-lg md:text-xl font-semibold; }
+  .text-heading-4 { @apply text-base md:text-lg font-medium; }
+
+  .text-body-lg { @apply text-lg leading-relaxed; }
+  .text-body-md { @apply text-base leading-relaxed; }
+  .text-body-sm { @apply text-sm leading-snug; }
+  .text-body-xs { @apply text-xs leading-tight; }
+
+  /* Consistent Spacing Scale */
+  .spacing-xs { @apply py-1 px-2; }
+  .spacing-sm { @apply py-2 px-3; }
+  .spacing-md { @apply py-3 px-4; }
+  .spacing-lg { @apply py-4 px-6; }
+  .spacing-xl { @apply py-6 px-8; }
+  .spacing-2xl { @apply py-8 px-10; }
+
+  /* Neon/Glow Accents */
+  .neon-primary {
+    @apply shadow-[0_0_8px_rgba(99,102,241,0.3)];
+  }
+  .neon-success {
+    @apply shadow-[0_0_8px_rgba(16,185,129,0.3)];
+  }
+  .neon-warning {
+    @apply shadow-[0_0_8px_rgba(245,158,11,0.3)];
+  }
+  .neon-error {
+    @apply shadow-[0_0_8px_rgba(239,68,68,0.3)];
   }
 }
 body:not(.no-bg)::before {
@@ -193,6 +231,48 @@ body:not(.no-bg)::before {
   html.lenis {
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
+  }
+
+  /* Glow effects */
+  .glow-on-hover {
+    transition: box-shadow 200ms ease-out;
+  }
+
+  .glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3), 0 0 25px rgba(99, 102, 241, 0.15);
+  }
+
+  .glow-on-focus:focus {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4), 0 0 25px rgba(99, 102, 241, 0.2);
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+  }
+
+  .glow-success {
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  }
+
+  .glow-warning {
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  }
+
+  .glow-error {
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  }
+
+  /* Smooth transitions */
+  .transition-fast {
+    transition: all 150ms ease-out;
+  }
+
+  .transition-normal {
+    transition: all 200ms ease-out;
+  }
+
+  .transition-slow {
+    transition: all 300ms ease-out;
   }
 }
 

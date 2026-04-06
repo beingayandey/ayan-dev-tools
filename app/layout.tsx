@@ -7,11 +7,13 @@ import { AppHeader } from "@/components/app-header";
 import { AppRail } from "@/components/app-rail";
 import { AdZone } from "@/components/ad-zone";
 import { Toaster } from "@/components/ui/toaster";
+import { ToastProvider } from "@/context/toast-context";
 import { LenisWrapper } from "@/components/lenis-wrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { BackgroundRenderer } from "@/components/background-renderer";
 import { FavoritesProvider } from "@/context/favorites-context";
 import { RecentToolsProvider } from "@/context/recent-tools-context";
+import { DeveloperOSProvider } from "@/context/developer-os-context";
 
 const fontInter = Inter({
   subsets: ["latin"],
@@ -75,23 +77,27 @@ export default function RootLayout({
         </Script>
         <Toaster />
         <BackgroundRenderer />
-        <FavoritesProvider>
-          <RecentToolsProvider>
-            <LenisWrapper>
-              <SidebarProvider className="bg-transparent min-h-screen relative">
-                <AppSidebar />
-                <SidebarInset className="bg-transparent flex flex-col flex-1 min-h-screen">
-                  <AppHeader />
-                  <div className="flex flex-1 relative">
-                    <main className="flex-1 bg-transparent relative custom-scrollbar overscroll-contain pb-10 sm:pb-20">
-                      {children}
-                    </main>
-                  </div>
-                </SidebarInset>
-              </SidebarProvider>
-            </LenisWrapper>
-          </RecentToolsProvider>
-        </FavoritesProvider>
+        <DeveloperOSProvider>
+          <ToastProvider>
+            <FavoritesProvider>
+            <RecentToolsProvider>
+              <LenisWrapper>
+                <SidebarProvider className="bg-transparent min-h-screen relative">
+                  <AppSidebar />
+                  <SidebarInset className="bg-transparent flex flex-col flex-1 min-h-screen">
+                    <AppHeader />
+                    <div className="flex flex-1 relative">
+                      <main className="flex-1 bg-transparent relative custom-scrollbar overscroll-contain pb-10 sm:pb-20">
+                        {children}
+                      </main>
+                    </div>
+                  </SidebarInset>
+                </SidebarProvider>
+              </LenisWrapper>
+            </RecentToolsProvider>
+          </FavoritesProvider>
+          </ToastProvider>
+        </DeveloperOSProvider>
         <Analytics />
       </body>
     </html>

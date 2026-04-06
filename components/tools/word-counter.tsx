@@ -5,7 +5,7 @@ import { Copy, Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWorkflow } from "@/context/workflow-context";
 
-export function WordCounterTool() {
+export function WordCounterTool({ onOutputChange }: { onOutputChange?: (data: any) => void }) {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -57,6 +57,18 @@ export function WordCounterTool() {
       speakingTime,
     };
   }, [text]);
+
+  // Notify parent when stats change
+  useEffect(() => {
+    if (onOutputChange) {
+      onOutputChange({
+        text,
+        stats,
+        type: 'text-analysis',
+        timestamp: Date.now()
+      });
+    }
+  }, [text, stats, onOutputChange]);
 
   const { completeAction, resetAction } = useWorkflow();
 
