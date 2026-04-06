@@ -25,13 +25,22 @@ import {
 import { Badge } from "@/components/ui/badge";
 import ToolRenderer from "@/components/tool-renderer";
 import { SmartSuggestions } from "@/components/smart-suggestions";
-import { WorkflowProvider } from "@/context/workflow-context";
+import { WorkflowProvider, useWorkflow } from "@/context/workflow-context";
 import { WorkflowMode } from "@/components/workflow-mode";
 import { CrossLinks } from "@/components/cross-links";
 import { WorkspaceShellWithNav } from "@/components/workspace/workspace-shell-with-nav";
 import { SuggestionEngine } from "@/components/workspace/suggestion-engine";
+import { NextSteps } from "@/components/workspace/next-steps";
 import { useDeveloperOS } from "@/context/developer-os-context";
 import { useState, useEffect } from "react";
+
+// Wrapper component that checks workflow state to show Next Steps
+function NextStepsAfterResult({ toolId }: { toolId: string }) {
+  const { isActionCompleted } = useWorkflow();
+  const hasOutput = isActionCompleted;
+
+  return <NextSteps toolId={toolId} hasOutput={hasOutput} />;
+}
 
 interface ToolPageProps {
   toolId: string;
@@ -78,9 +87,11 @@ export default function ToolPageClient({ toolId }: ToolPageProps) {
         <section className="border border-border/50 rounded-2xl bg-card shadow-sm overflow-hidden">
           <WorkflowProvider>
             <ToolRenderer toolId={toolId} />
-            {/* 🔗 Contextual Cross-Linking */}
+            {/* 🔗 Contextual Cross-Linking (always visible) */}
             <CrossLinks toolId={toolId} />
-            {/* 🎯 Workflow Mode Pipeline (Next Steps) */}
+            {/* 🎯 Next Steps Engine - Shows AFTER user gets result */}
+            <NextStepsAfterResult toolId={toolId} />
+            {/* 🎯 Workflow Mode Pipeline */}
             <WorkflowMode toolId={toolId} />
           </WorkflowProvider>
         </section>

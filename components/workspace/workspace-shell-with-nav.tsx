@@ -185,7 +185,7 @@ export const WorkspaceShellWithNav: React.FC<WorkspaceShellWithNavProps> = ({ ch
                 </span>
               </div>
               <div className="text-xs text-muted-foreground">
-                {isHydrated ? `${navigationHistory.length} tools used` : '...'} • {new Date().toLocaleTimeString()}
+                {isHydrated ? `${navigationHistory.length} tools used` : '...'}
               </div>
             </div>
           </div>
